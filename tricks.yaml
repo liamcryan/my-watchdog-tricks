@@ -1,7 +1,8 @@
 ---
 tricks:
-- watchdog_tricks.tricks.SyncTrick:
+- watchdog_tricks.tricks.SyncFilesTrick:
     ignore_directories: True
+    create_dest_dir_if_not_exist: True
     user_regexes:
       liamcryan:
         - ".*_WORKING/ABC_I/ABC_Report_I_v[0-9]+\\.txt$"

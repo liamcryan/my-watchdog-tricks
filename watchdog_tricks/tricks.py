@@ -33,18 +33,23 @@ class TrickRE(RegexMatchingEventHandler):
         return template_yaml % context
 
 
-class SyncTrick(TrickRE):
-    def __init__(self, src_dir=None, dest_dir=None, user_regexes=None, regexes=None, ignore_directories=False):
-        # function to get user
-        user = os.path.basename(os.getenv('HOME'))
+class SyncFilesTrick(TrickRE):
+    def __init__(self, src_dir=None, dest_dir=None, user_regexes=None, regexes=None, ignore_regexes=None,
+                 ignore_directories=False, create_dest_dir_if_not_exist=None):
         if not regexes:
             regexes = []
+        if not user_regexes:
+            user_regexes = {}
+
+        user = os.path.basename(os.getenv('HOME'))
         regexes = user_regexes.get(user, []) + regexes
         if not regexes:
-            raise Exception('Must specify regexes or user_regexes')
-        super().__init__(regexes=regexes, ignore_directories=ignore_directories)
+            ignore_regexes = ['.*']
+
+        super().__init__(regexes=regexes, ignore_regexes=ignore_regexes, ignore_directories=ignore_directories)
         self.src_dir = src_dir
         self.dest_dir = dest_dir
+        self.create_dest_dir_if_not_exist = create_dest_dir_if_not_exist
 
     def matches_regex(self, search_str):
         # watchdogs regex doesn't catch my regex in all cases???
@@ -56,6 +61,10 @@ class SyncTrick(TrickRE):
     def move_file(self, src_path):
         if not self.matches_regex(src_path):
             return
+
+        if self.create_dest_dir_if_not_exist:
+            delta_dirs = os.path.dirname(src_path[len(self.src_dir) + 1:])
+            os.makedirs(os.path.join(self.dest_dir, delta_dirs), exist_ok=True)
 
         copyfile(
             src_path,
