@@ -1,0 +1,12 @@
+---
+tricks:
+- watchdog_tricks.tricks.SyncTrick:
+    ignore_directories: True
+    user_regexes:
+      liamcryan:
+        - ".*_WORKING/ABC_I/ABC_Report_I_v[0-9]+\\.txt$"
+#    regexes:
+#      - ".*_WORKING/ABC_I/ABC_Report_I_v[0-9]+\\.txt$"
+    src_dir: /Users/liamcryan/PycharmProjects/watchlog/_WORKING
+    dest_dir: /Users/liamcryan/PycharmProjects/watchlog/_PRODUCTION
+...
