@@ -20,6 +20,8 @@ while True:
     menu_item = tray.read()
 
     if menu_item == 'Exit':
+        process.kill()
+        process.wait()
         break
     if menu_item == 'Restart':
         process.kill()
