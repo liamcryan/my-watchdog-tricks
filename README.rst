@@ -1,10 +1,12 @@
 Playing around with watchdog tricks
 ===================================
 
-SyncTrick
-+++++++++
+SyncFilesTrick
+++++++++++++++
 
 This trick will sync files in a watched directory to a destination folder.
+
+
 
 Some thoughts -
 

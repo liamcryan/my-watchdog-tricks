@@ -1,5 +1,6 @@
 import os
 import re
+from getpass import getpass
 from shutil import copyfile
 
 from watchdog.events import RegexMatchingEventHandler
@@ -41,7 +42,7 @@ class SyncFilesTrick(TrickRE):
         if not user_regexes:
             user_regexes = {}
 
-        user = os.path.basename(os.getenv('HOME'))
+        user = getpass.getuser()
         regexes = user_regexes.get(user, []) + regexes
         if not regexes:
             ignore_regexes = ['.*']
