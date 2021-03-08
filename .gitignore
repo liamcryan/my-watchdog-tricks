@@ -2,5 +2,5 @@
 venv
 .DS_Store
 .idea
-_PRODUCTION/*.txt
+_PRODUCTION/ABC_I
 *.pyc*

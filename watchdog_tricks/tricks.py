@@ -1,6 +1,6 @@
 import os
 import re
-from getpass import getpass
+import getpass
 from shutil import copyfile
 
 from watchdog.events import RegexMatchingEventHandler
