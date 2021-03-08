@@ -45,7 +45,7 @@ def copyfile_wrapper(a, b):
     # rever is a retry decorator I created in my early Python days & use a lot in my projects.
     # It is telling this function to execute again using exponential backoff
     # if a PermissionError is thrown.
-    # Total pause time is 1s - this might need to be adjusted.
+    # Total pause time is 30s before throwing an error
 
     return copyfile(a, b)
 
