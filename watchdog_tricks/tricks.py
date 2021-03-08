@@ -39,10 +39,9 @@ class SyncFilesTrick(TrickRE):
                  ignore_directories=False, create_dest_dir_if_not_exist=None):
         if not regexes:
             regexes = []
-        if not user_regexes:
-            user_regexes = {}
-
         user = getpass.getuser()
+        if not user_regexes or user_regexes.get(user) is None or user_regexes.get(user) == [None]:
+            user_regexes = {}
         regexes = user_regexes.get(user, []) + regexes
         if not regexes:
             ignore_regexes = ['.*']
