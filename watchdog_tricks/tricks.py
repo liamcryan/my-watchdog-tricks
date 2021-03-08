@@ -1,11 +1,11 @@
+import logging
 import os
 import re
 import getpass
 from shutil import copyfile
 
+import rever
 from watchdog.events import RegexMatchingEventHandler
-
-import logging
 
 logging.getLogger('fsevents').setLevel(logging.ERROR)
 
@@ -32,6 +32,22 @@ class TrickRE(RegexMatchingEventHandler):
     ignore_directories: false
 """
         return template_yaml % context
+
+
+@rever.rever(exception=(PermissionError,))
+def copyfile_wrapper(a, b):
+    # I have noticed when copying/pasting files to watched folder
+    # corporate networks may have some period of time to perform security checks maybe?
+    # Anyway, the create file event is fired
+    # and when shutil.copyfile runs we hit a permission error.
+    # This didn't happen when time.sleep happened prior to copying the file
+    # which makes me think something corporate is happening & causing the permission error.
+    # rever is a retry decorator I created in my early Python days & use a lot in my projects.
+    # It is telling this function to execute again using exponential backoff
+    # if a PermissionError is thrown.
+    # Total pause time is 1s - this might need to be adjusted.
+
+    return copyfile(a, b)
 
 
 class SyncFilesTrick(TrickRE):
@@ -66,10 +82,7 @@ class SyncFilesTrick(TrickRE):
             delta_dirs = os.path.dirname(src_path[len(self.src_dir) + 1:])
             os.makedirs(os.path.join(self.dest_dir, delta_dirs), exist_ok=True)
 
-        copyfile(
-            src_path,
-            os.path.join(self.dest_dir, src_path[len(self.src_dir) + 1:])
-        )
+        copyfile_wrapper(src_path, os.path.join(self.dest_dir, src_path[len(self.src_dir) + 1:]))
 
     def delete_file(self, src_path):
         if not self.matches_regex(src_path):
