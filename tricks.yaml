@@ -6,6 +6,7 @@ tricks:
     user_regexes:
       liamcryan:
         - ".*_WORKING/ABC_I/ABC_Report_I_v[0-9]+\\.txt$"
+        - ".*_WORKING/ABC_I/ABC_Report_I_v[0-9]+\\.csv$"
 #    regexes:
 #      - ".*_WORKING/ABC_I/ABC_Report_I_v[0-9]+\\.txt$"
     src_dir: /Users/liamcryan/PycharmProjects/watchlog/_WORKING
